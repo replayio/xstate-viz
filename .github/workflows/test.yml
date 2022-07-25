@@ -29,15 +29,10 @@ jobs:
         run: yarn jest --ci
 
       - name: Run Cypress
-        uses: replayio/action-cypress@v0.1.7
+        uses: replayio/action-cypress@v0.2.2
         with:
           command: npm run e2e:server -- -- --
           browser: "Replay Firefox"
-          apiKey: ${{ secrets.CYPRESS_REPLAY_API_KEY }}
+          api-key: ${{ secrets.RECORD_REPLAY_API_KEY }}
           public: true
-          issue-number: ${{ github.event.pull_request.number }}
           upload-all: true
-
-      - run: npx @replayio/replay ls
-        if: ${{ always() }}
-        shell: bash 
