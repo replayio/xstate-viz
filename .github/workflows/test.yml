@@ -29,10 +29,10 @@ jobs:
         run: yarn jest --ci
 
       - name: Run Cypress
-        uses: replayio/action-cypress@v0.2.2
+        uses: replayio/action-cypress@ryan/long-upload
         with:
           command: npm run e2e:server -- -- --
           browser: "Replay Firefox"
-          api-key: ${{ secrets.RECORD_REPLAY_API_KEY }}
+          api-key: ""
           public: true
           upload-all: true
