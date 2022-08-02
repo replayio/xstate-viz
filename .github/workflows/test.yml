@@ -31,7 +31,7 @@ jobs:
       - name: Run Cypress
         uses: replayio/action-cypress@ryan/long-upload
         with:
-          command: npm run e2e:server -- -- --
+          command: npm run e2e:server -- -- -- --spec cypress/integration/inspector.spec.ts
           browser: "Replay Firefox"
           api-key: ""
           public: true
