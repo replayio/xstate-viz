@@ -39,6 +39,7 @@ jobs:
           RECORD_REPLAY_METADATA_FILE: /tmp/replay-metadata
 
       - name: Upload replays
+        if: ${{ always() }}
         uses: replayio/action-upload@v0.4.3
         with:
           api-key: ${{ secrets.RECORD_REPLAY_API_KEY }}
