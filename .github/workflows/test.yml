@@ -1,15 +1,16 @@
-name: Tests
-
+name: E2E Test
 on:
-  pull_request:
-    types: [opened, synchronize, reopened]
+  schedule:
+    - cron: '0 0 * * *'
+  push:
   workflow_dispatch:
-    inputs:
-      browser:
-        description: Cypress browser to use
 
 jobs:
   cypress-tests:
+    strategy:
+      fail-fast: false
+      matrix:
+        record: ["record", "no-record"]
     runs-on: ubuntu-latest
 
     steps:
@@ -31,7 +32,7 @@ jobs:
       - name: Run Cypress
         uses: cypress-io/github-action@v2
         with:
-          browser: "Replay Firefox"
+          browser: "Replay Chromium"
           start: yarn start
           wait-on: http://localhost:3000
         env:
