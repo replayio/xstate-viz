@@ -1,4 +1,4 @@
-name: Cypress Tests With Replay
+name: Cypress Tests
 on:
   schedule:
     - cron: '0 0 * * *'
@@ -7,6 +7,7 @@ on:
 
 jobs:
   cypress-tests-record:
+    name: Replay (record)
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -26,6 +27,7 @@ jobs:
           wait-on: http://localhost:3000
         env:
           RECORD_ALL_CONTENT: 1
+          RECORD_REPLAY_METADATA_FILE: /tmp/replay-metadata
           RECORD_REPLAY_TEST_METRICS: 1
           RECORD_REPLAY_WEBHOOK_URL: ${{ secrets.RECORD_REPLAY_WEBHOOK_URL }}
 
@@ -37,6 +39,7 @@ jobs:
           api-key: rwk_5NAjrY64P9r9jeVBEK0gfTuHXBULGzdjX06ub2J3TbQ
 
   cypress-tests-no-record:
+    name: Replay (no-record)
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -56,6 +59,26 @@ jobs:
           wait-on: http://localhost:3000
         env:
           RECORD_ALL_CONTENT: 1
+          RECORD_REPLAY_METADATA_FILE: /tmp/replay-metadata
           RECORD_REPLAY_TEST_METRICS: 1
           RECORD_REPLAY_WEBHOOK_URL: ${{ secrets.RECORD_REPLAY_WEBHOOK_URL }}
-          RECORD_REPLAY_METADATA_FILE: /tmp/replay-metadata
+          RECORD_REPLAY_DRIVER: /tmp/not-here
+
+  original-cypress-tests:
+    name: Original
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Use Node.js
+        uses: actions/setup-node@v2.2.0
+
+      - name: Install
+        run: yarn install --frozen-lockfile
+
+      - name: Run Cypress
+        uses: cypress-io/github-action@v2
+        with:
+          start: yarn start
+          wait-on: http://localhost:3000
