@@ -1,0 +1,87 @@
+name: Cypress Tests With Replay
+on:
+  schedule:
+    - cron: '0 0 * * *'
+  push:
+  workflow_dispatch:
+
+jobs:
+  cypress-tests-record:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Use Node.js
+        uses: actions/setup-node@v2.2.0
+
+      - name: Install
+        run: yarn install --frozen-lockfile
+
+      - name: Lint
+        run: yarn graphql-codegen && yarn tsc
+
+      - name: Jest tests
+        run: yarn jest --ci
+
+      - name: Build
+        run: yarn next build
+        env:
+          NEXT_PUBLIC_GRAPHQL_API_URL: https://dev.stately.ai/registry/api/graphql
+          NEXT_PUBLIC_USE_LOCAL_MONACO: 'true'
+          CI: 'false'
+
+      - name: Run Cypress
+        uses: cypress-io/github-action@v2
+        with:
+          browser: "Replay Chromium"
+          start: yarn serve
+          wait-on: http://localhost:3000
+        env:
+          RECORD_ALL_CONTENT: 1
+          RECORD_REPLAY_TEST_METRICS: 1
+          RECORD_REPLAY_WEBHOOK_URL: ${{ secrets.RECORD_REPLAY_WEBHOOK_URL }}
+
+      - name: Upload replays
+        if: ${{ always() }}
+        uses: replayio/action-upload@v0.4.3
+        with:
+          public: true
+          api-key: rwk_5NAjrY64P9r9jeVBEK0gfTuHXBULGzdjX06ub2J3TbQ
+
+  cypress-tests-no-record:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Use Node.js
+        uses: actions/setup-node@v2.2.0
+
+      - name: Install
+        run: yarn install --frozen-lockfile
+
+      - name: Lint
+        run: yarn graphql-codegen && yarn tsc
+
+      - name: Jest tests
+        run: yarn jest --ci
+
+      - name: Build
+        run: yarn next build
+        env:
+          NEXT_PUBLIC_GRAPHQL_API_URL: https://dev.stately.ai/registry/api/graphql
+          NEXT_PUBLIC_USE_LOCAL_MONACO: 'true'
+          CI: 'false'
+
+      - name: Run Cypress
+        uses: cypress-io/github-action@v2
+        with:
+          browser: "Replay Chromium"
+          start: yarn serve
+          wait-on: http://localhost:3000
+        env:
+          RECORD_ALL_CONTENT: 1
+          RECORD_REPLAY_TEST_METRICS: 1
+          RECORD_REPLAY_WEBHOOK_URL: ${{ secrets.RECORD_REPLAY_WEBHOOK_URL }}
+          RECORD_REPLAY_METADATA_FILE: /tmp/replay-metadata
