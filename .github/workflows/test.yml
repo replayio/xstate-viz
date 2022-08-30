@@ -20,7 +20,7 @@ jobs:
         run: yarn install --frozen-lockfile
 
       - name: Run Cypress
-        uses: cypress-io/github-action@v2
+        uses: cypress-io/github-action@v4
         with:
           browser: "Replay Chromium"
           start: yarn start
@@ -52,7 +52,7 @@ jobs:
         run: yarn install --frozen-lockfile
 
       - name: Run Cypress
-        uses: cypress-io/github-action@v2
+        uses: cypress-io/github-action@v4
         with:
           browser: "Replay Chromium"
           start: yarn start
@@ -78,7 +78,7 @@ jobs:
         run: yarn install --frozen-lockfile
 
       - name: Run Cypress
-        uses: cypress-io/github-action@v2
+        uses: cypress-io/github-action@v4
         with:
           start: yarn start
           wait-on: http://localhost:3000
