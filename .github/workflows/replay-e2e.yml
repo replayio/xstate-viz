@@ -18,24 +18,11 @@ jobs:
       - name: Install
         run: yarn install --frozen-lockfile
 
-      - name: Lint
-        run: yarn graphql-codegen && yarn tsc
-
-      - name: Jest tests
-        run: yarn jest --ci
-
-      - name: Build
-        run: yarn next build
-        env:
-          NEXT_PUBLIC_GRAPHQL_API_URL: https://dev.stately.ai/registry/api/graphql
-          NEXT_PUBLIC_USE_LOCAL_MONACO: 'true'
-          CI: 'false'
-
       - name: Run Cypress
         uses: cypress-io/github-action@v2
         with:
           browser: "Replay Chromium"
-          start: yarn serve
+          start: yarn start
           wait-on: http://localhost:3000
         env:
           RECORD_ALL_CONTENT: 1
@@ -61,24 +48,11 @@ jobs:
       - name: Install
         run: yarn install --frozen-lockfile
 
-      - name: Lint
-        run: yarn graphql-codegen && yarn tsc
-
-      - name: Jest tests
-        run: yarn jest --ci
-
-      - name: Build
-        run: yarn next build
-        env:
-          NEXT_PUBLIC_GRAPHQL_API_URL: https://dev.stately.ai/registry/api/graphql
-          NEXT_PUBLIC_USE_LOCAL_MONACO: 'true'
-          CI: 'false'
-
       - name: Run Cypress
         uses: cypress-io/github-action@v2
         with:
           browser: "Replay Chromium"
-          start: yarn serve
+          start: yarn start
           wait-on: http://localhost:3000
         env:
           RECORD_ALL_CONTENT: 1
