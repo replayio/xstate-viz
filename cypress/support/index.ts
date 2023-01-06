@@ -10,6 +10,7 @@
 import { InspectorOptions } from '@xstate/inspect';
 import './commands';
 import { state } from './state';
+import '@replayio/cypress/support';
 
 type AnyFunction = (...args: any[]) => any;
 

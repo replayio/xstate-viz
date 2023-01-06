@@ -10,6 +10,7 @@
     "@emotion/styled": "^11",
     "@graphql-typed-document-node/core": "^3.1.0",
     "@monaco-editor/react": "^4.2.1",
+    "@replayio/cypress": "^0.4.6",
     "@sentry/react": "^6.10.0",
     "@sentry/tracing": "^6.10.0",
     "@supabase/supabase-js": "^1.22.5",
